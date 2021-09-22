@@ -23,7 +23,8 @@ export default {
   },
   methods: {
     logOutOfProfile() {
-      localStorage.clear();
+      localStorage.removeItem("token");
+      localStorage.removeItem("success");
       this.$router.push({
         name: "Authorization",
       });

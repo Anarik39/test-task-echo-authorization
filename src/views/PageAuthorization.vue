@@ -44,7 +44,6 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
-import axios from "axios";
 export default {
   name: "PageAuthorization",
   mixins: [validationMixin],
@@ -90,25 +89,21 @@ export default {
         phone: this.phone.replace(/[+()-]/g, ""),
         password: this.password,
       };
-      axios
-        .post("https://backend-front-test.dev.echo-company.ru/api/auth/login", data)
+      this.$store
+        .dispatch("login", data)
         .then((resp) => {
-          localStorage.setItem("token", resp.data.token);
-          localStorage.setItem("success", resp.data.success);
+          localStorage.removeItem("phoneLogin");
           this.$router.push({
             name: "User",
             params: { data: resp.data },
           });
         })
         .catch((err) => {
-          localStorage.setItem("token", "");
-          localStorage.setItem("success", err.data.success);
-          this.errorSubmit = err.response.data;
+          this.errorSubmit = err.data;
         });
     },
   },
   mounted() {
-    /* localStorage.clear(); */
     if (localStorage.phoneLogin) {
       this.phone = localStorage.phoneLogin;
     }

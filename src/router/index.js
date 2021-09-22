@@ -57,10 +57,8 @@ router.afterEach((to) => {
   document.title = getTitleByRouteName(to.name);
 });
 
-const isAuth = store.state.success;
-
 router.beforeEach((to, from, next) => {
-  if (to.name === "User" && !isAuth) {
+  if (to.name === "User" && !store.getters["getSuccess"]) {
     next({ name: "Authorization" });
   } else {
     next();
