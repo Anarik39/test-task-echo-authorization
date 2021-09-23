@@ -10,9 +10,11 @@ export default new Vuex.Store({
     token: localStorage.getItem("token") || "",
   },
   mutations: {
-    auth_success(state, { token, success }) {
-      state.success = success;
+    authSuccess(state, { token, success }) {
       state.token = token;
+      localStorage.setItem("token", token);
+      state.success = success;
+      localStorage.setItem("success", success);
     },
   },
   getters: {
@@ -27,10 +29,44 @@ export default new Vuex.Store({
           .then((resp) => {
             const token = resp.data.token;
             const success = resp.data.success;
-            localStorage.setItem("token", token);
-            localStorage.setItem("success", success);
-            commit("auth_success", { token, success });
+            commit("authSuccess", { token, success });
             resolve(resp);
+          })
+          .catch((err) => reject(err.response));
+      });
+    },
+    registration({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("https://backend-front-test.dev.echo-company.ru/api/user/registration", data)
+          .then((resp) => {
+            const token = resp.data.token;
+            const success = resp.data.success;
+            commit("authSuccess", { token, success });
+            resolve(resp);
+          })
+          .catch((err) => reject(err.response));
+      });
+    },
+    forgotPasswordStart(context, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("https://backend-front-test.dev.echo-company.ru/api/user/forgot-start", data)
+          .then((resp) => {
+            resolve(resp);
+          })
+          .catch((err) => reject(err.response));
+      });
+    },
+    forgotPasswordEnd({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("https://backend-front-test.dev.echo-company.ru/api/user/forgot-end", data)
+          .then((resp) => {
+            const token = resp.data.token;
+            const success = resp.data.success;
+            commit("authSuccess", { token, success });
+            resolve(resp.data);
           })
           .catch((err) => reject(err.response));
       });

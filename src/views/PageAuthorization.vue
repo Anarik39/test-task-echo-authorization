@@ -26,15 +26,14 @@
       @blur="$v.password.$touch()"
     ></v-text-field>
     <v-checkbox color="teal" v-model="checkbox" label="Запомнить пароль?"></v-checkbox>
-    <v-btn color="teal" dark class="mb-2" type="submit">
+    <v-btn block color="teal" dark class="mb-2" type="submit">
       Войти
     </v-btn>
-
-    <div>
-      <v-btn to="/forgotpassword" plain color="teal" class="mt-4">
+    <div class="text-center mt-4">
+      <v-btn to="/forgotpassword" plain color="teal">
         Забыли пароль?
       </v-btn>
-      <v-btn to="/registration" plain color="teal" dark class="mt-4">
+      <v-btn to="/registration" plain color="teal" dark>
         Регистрация
       </v-btn>
     </div>
@@ -48,11 +47,6 @@ export default {
   name: "PageAuthorization",
   mixins: [validationMixin],
 
-  validations: {
-    phone: { required, minLength: minLength(16), maxLength: maxLength(16) },
-    password: { required },
-  },
-
   data: () => ({
     showPassword: false,
     phone: "",
@@ -60,6 +54,11 @@ export default {
     checkbox: false,
     errorSubmit: {},
   }),
+
+  validations: {
+    phone: { required, minLength: minLength(16), maxLength: maxLength(16) },
+    password: { required, minLength: minLength(8) },
+  },
 
   computed: {
     phoneErrors() {
@@ -73,6 +72,7 @@ export default {
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
+      !this.$v.password.minLength && errors.push("Пароль должен содержать не менее 8 символов");
       !this.$v.password.required && errors.push("Пароль не указан");
       return errors;
     },
@@ -91,11 +91,10 @@ export default {
       };
       this.$store
         .dispatch("login", data)
-        .then((resp) => {
+        .then(() => {
           localStorage.removeItem("phoneLogin");
           this.$router.push({
             name: "User",
-            params: { data: resp.data },
           });
         })
         .catch((err) => {
@@ -104,13 +103,13 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.phoneLogin) {
-      this.phone = localStorage.phoneLogin;
+    if (localStorage.getItem("phoneLogin")) {
+      this.phone = localStorage.getItem("phoneLogin");
     }
   },
   watch: {
     phone(newPhone) {
-      localStorage.phoneLogin = newPhone;
+      localStorage.setItem("phoneLogin", newPhone);
     },
   },
 };

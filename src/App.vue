@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <v-container class="main-wrapper">
-        <v-card elevation="2" outlined class="pa-5">
+        <v-card elevation="2" outlined class="pa-5" max-width="450px" width="100%">
           <router-view />
         </v-card>
       </v-container>
@@ -25,7 +25,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   max-width: 400px;
+}
+.v-card__title {
+  word-break: normal !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 </style>

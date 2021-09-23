@@ -33,7 +33,6 @@ const routes = [
     name: "User",
     component: () =>
       import(/* webpackChunkName: "pagePersonalUser" */ "../views/PagePersonalUser.vue"),
-    props: true,
   },
 ];
 

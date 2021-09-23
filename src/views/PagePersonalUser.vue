@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card-title>{{ title }}</v-card-title>
+    <v-card-title class="justify-center">{{ title }}</v-card-title>
     <v-btn @click="logOutOfProfile" block color="teal" dark class="mt-4">
       Выход
     </v-btn>
@@ -17,9 +17,6 @@ export default {
       title: "",
       token: "",
     };
-  },
-  props: {
-    data: Object,
   },
   methods: {
     logOutOfProfile() {
@@ -43,8 +40,7 @@ export default {
       .then(
         (response) =>
           (this.title = `Здравствуйте, ${response.data.first_name} ${response.data.last_name}!`)
-      )
-      .catch(() => (this.title = "Не авторизован"));
+      );
   },
 };
 </script>
