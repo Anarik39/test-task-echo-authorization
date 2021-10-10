@@ -31,7 +31,9 @@
       </v-btn>
       <v-dialog persistent v-model="modalDisplay.show" max-width="300px">
         <v-card>
-          <v-card-title class="text-center justify-center pa-4 teal white--text">
+          <v-card-title
+            class="text-center justify-center pa-4 teal white--text"
+          >
             {{ modalDisplay.message }}
           </v-card-title>
           <v-progress-linear
@@ -54,7 +56,7 @@ export default {
 
   props: {
     message: String,
-    phone: String,
+    phone: String
   },
 
   data() {
@@ -65,21 +67,22 @@ export default {
       sms: "",
       modalDisplay: {
         show: false,
-        message: "",
-      },
+        message: ""
+      }
     };
   },
 
   validations: {
     password: { required, minLength: minLength(8) },
-    sms: { required },
+    sms: { required }
   },
 
   computed: {
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength && errors.push("Пароль должен содержать не менее 8 символов");
+      !this.$v.password.minLength &&
+        errors.push("Пароль должен содержать не менее 8 символов");
       !this.$v.password.required && errors.push("Пароль не указан");
       return errors;
     },
@@ -88,7 +91,7 @@ export default {
       if (!this.$v.sms.$dirty) return errors;
       !this.$v.sms.required && errors.push("Код из СМС не указан");
       return errors;
-    },
+    }
   },
   methods: {
     submit() {
@@ -100,27 +103,27 @@ export default {
       const data = {
         phone: this.phone,
         code: this.sms,
-        password: this.password,
+        password: this.password
       };
       this.$store
-        .dispatch("forgotPasswordEnd", data)
-        .then((resp) => {
+        .dispatch("profile/forgotPasswordEnd", data)
+        .then(resp => {
           this.modalDisplay = {
             show: resp.success,
-            message: resp.message,
+            message: resp.message
           };
           setTimeout(
             () =>
               this.$router.push({
-                name: "User",
+                name: "User"
               }),
             2000
           );
         })
-        .catch((err) => {
+        .catch(err => {
           this.errorSubmit = err.data;
         });
-    },
-  },
+    }
+  }
 };
 </script>

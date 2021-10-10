@@ -72,14 +72,14 @@ export default {
     password: "",
     firstName: "",
     lastName: "",
-    errorSubmit: {},
+    errorSubmit: {}
   }),
 
   validations: {
     firstName: { required },
     lastName: { required },
     phone: { required, minLength: minLength(16), maxLength: maxLength(16) },
-    password: { required, minLength: minLength(8) },
+    password: { required, minLength: minLength(8) }
   },
 
   computed: {
@@ -106,10 +106,11 @@ export default {
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength && errors.push("Пароль должен содержать не менее 8 символов");
+      !this.$v.password.minLength &&
+        errors.push("Пароль должен содержать не менее 8 символов");
       !this.$v.password.required && errors.push("Пароль не указан");
       return errors;
-    },
+    }
   },
 
   methods: {
@@ -123,23 +124,23 @@ export default {
         phone: this.phone.replace(/[+()-]/g, ""),
         password: this.password,
         first_name: this.firstName,
-        last_name: this.lastName,
+        last_name: this.lastName
       };
 
       this.$store
-        .dispatch("registration", data)
+        .dispatch("profile/registration", data)
         .then(() => {
           localStorage.removeItem("firstNameRegistration");
           localStorage.removeItem("lastNameRegistration");
           localStorage.removeItem("phoneRegistration");
           this.$router.push({
-            name: "User",
+            name: "User"
           });
         })
-        .catch((err) => {
+        .catch(err => {
           this.errorSubmit = err.data;
         });
-    },
+    }
   },
   mounted() {
     if (localStorage.getItem("firstNameRegistration")) {
@@ -161,7 +162,7 @@ export default {
     },
     phone(newPhone) {
       localStorage.setItem("phoneRegistration", newPhone);
-    },
-  },
+    }
+  }
 };
 </script>

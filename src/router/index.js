@@ -1,63 +1,39 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
-import PageAuthorization from "../views/PageAuthorization.vue";
+import routes from "./routes";
 
 Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: "/",
-    name: "Authorization",
-    component: PageAuthorization,
-  },
-  {
-    path: "*",
-    name: "NotFound",
-    component: () => import(/* webpackChunkName: "pageNotFound" */ "../views/PageNotFound.vue"),
-  },
-  {
-    path: "/forgotpassword",
-    name: "ForgotPassword",
-    component: () =>
-      import(/* webpackChunkName: "pageForgotPassword" */ "../views/PageForgotPassword.vue"),
-  },
-  {
-    path: "/registration",
-    name: "Registration",
-    component: () =>
-      import(/* webpackChunkName: "pageRegistration" */ "../views/PageRegistration.vue"),
-  },
-  {
-    path: "/user",
-    name: "User",
-    component: () =>
-      import(/* webpackChunkName: "pagePersonalUser" */ "../views/PagePersonalUser.vue"),
-  },
-];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
-const getTitleByRouteName = (routeName) => {
+const getTitleByRouteName = routeName => {
   return {
     Authorization: "Авторизация",
     User: "Личный кабинет",
     NotFound: "Страница не найдена",
     ForgotPassword: "Забыл пароль",
-    Registration: "Регистрация",
+    Registration: "Регистрация"
   }[routeName];
 };
 
-router.afterEach((to) => {
+router.afterEach(to => {
   document.title = getTitleByRouteName(to.name);
+  if (
+    to.path === "/" ||
+    to.path === "/forgotpassword" ||
+    to.path === "/registration"
+  ) {
+    store.commit("profile/logOutOfProfile");
+  }
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name === "User" && !store.getters["getSuccess"]) {
+  if (to.path === "/user" && !store.getters["profile/getSuccess"]) {
     next({ name: "Authorization" });
   } else {
     next();

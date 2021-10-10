@@ -14,33 +14,31 @@ export default {
   name: "PagePersonalUser",
   data() {
     return {
-      title: "",
-      token: "",
+      title: ""
     };
   },
   methods: {
     logOutOfProfile() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("success");
+      this.$store.commit("profile/logOutOfProfile");
       this.$router.push({
-        name: "Authorization",
+        name: "Authorization"
       });
-    },
+    }
   },
   computed: {
-    ...mapGetters(["getToken"]),
+    ...mapGetters({ getToken: "profile/getToken" })
   },
   mounted() {
     axios
       .get("https://backend-front-test.dev.echo-company.ru/api/user", {
         headers: {
-          Authorization: this.getToken,
-        },
+          Authorization: this.getToken
+        }
       })
       .then(
-        (response) =>
+        response =>
           (this.title = `Здравствуйте, ${response.data.first_name} ${response.data.last_name}!`)
       );
-  },
+  }
 };
 </script>

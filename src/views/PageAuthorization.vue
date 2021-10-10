@@ -25,7 +25,11 @@
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
     ></v-text-field>
-    <v-checkbox color="teal" v-model="checkbox" label="Запомнить пароль?"></v-checkbox>
+    <v-checkbox
+      color="teal"
+      v-model="checkbox"
+      label="Запомнить пароль?"
+    ></v-checkbox>
     <v-btn block color="teal" dark class="mb-2" type="submit">
       Войти
     </v-btn>
@@ -52,12 +56,12 @@ export default {
     phone: "",
     password: "",
     checkbox: false,
-    errorSubmit: {},
+    errorSubmit: {}
   }),
 
   validations: {
     phone: { required, minLength: minLength(16), maxLength: maxLength(16) },
-    password: { required, minLength: minLength(8) },
+    password: { required, minLength: minLength(8) }
   },
 
   computed: {
@@ -72,35 +76,39 @@ export default {
     passwordErrors() {
       const errors = [];
       if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.minLength && errors.push("Пароль должен содержать не менее 8 символов");
+      !this.$v.password.minLength &&
+        errors.push("Пароль должен содержать не менее 8 символов");
       !this.$v.password.required && errors.push("Пароль не указан");
       return errors;
-    },
+    }
   },
 
   methods: {
     submit() {
       this.errorSubmit = {};
       this.$v.$touch();
+
       if (this.$v.$invalid) {
         return;
       }
+
       const data = {
         phone: this.phone.replace(/[+()-]/g, ""),
-        password: this.password,
+        password: this.password
       };
+
       this.$store
-        .dispatch("login", data)
+        .dispatch("profile/login", data)
         .then(() => {
           localStorage.removeItem("phoneLogin");
           this.$router.push({
-            name: "User",
+            name: "User"
           });
         })
-        .catch((err) => {
+        .catch(err => {
           this.errorSubmit = err.data;
         });
-    },
+    }
   },
   mounted() {
     if (localStorage.getItem("phoneLogin")) {
@@ -110,7 +118,7 @@ export default {
   watch: {
     phone(newPhone) {
       localStorage.setItem("phoneLogin", newPhone);
-    },
-  },
+    }
+  }
 };
 </script>

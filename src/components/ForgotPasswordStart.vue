@@ -27,16 +27,16 @@ export default {
   mixins: [validationMixin],
 
   props: {
-    callback: Function,
+    callback: Function
   },
 
   data: () => ({
     phone: "",
-    errorSubmit: {},
+    errorSubmit: {}
   }),
 
   validations: {
-    phone: { required, minLength: minLength(16), maxLength: maxLength(16) },
+    phone: { required, minLength: minLength(16), maxLength: maxLength(16) }
   },
 
   computed: {
@@ -47,7 +47,7 @@ export default {
         errors.push("Телефон введен некорректно");
       !this.$v.phone.required && errors.push("Телефон не указан");
       return errors;
-    },
+    }
   },
 
   methods: {
@@ -58,17 +58,20 @@ export default {
         return;
       }
       this.$store
-        .dispatch("forgotPasswordStart", {
-          phone: this.phone.replace(/[+()-]/g, ""),
+        .dispatch("profile/forgotPasswordStart", {
+          phone: this.phone.replace(/[+()-]/g, "")
         })
-        .then((resp) => {
+        .then(resp => {
           localStorage.removeItem("phoneForgotPassword");
-          this.callback({ data: resp.data, phone: this.phone.replace(/[+()-]/g, "") });
+          this.callback({
+            data: resp.data,
+            phone: this.phone.replace(/[+()-]/g, "")
+          });
         })
-        .catch((err) => {
+        .catch(err => {
           this.errorSubmit = err.data;
         });
-    },
+    }
   },
   mounted() {
     if (localStorage.getItem("phoneForgotPassword")) {
@@ -78,7 +81,7 @@ export default {
   watch: {
     phone(newPhone) {
       localStorage.setItem("phoneForgotPassword", newPhone);
-    },
-  },
+    }
+  }
 };
 </script>
