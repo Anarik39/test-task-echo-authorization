@@ -2,8 +2,6 @@
 
 ## SPA project with authorization/registration
 
-Created an SPA application with authorization/registration
-
 Stack: Vue 2, Vuex (persistedstate), Vue-router Vuetify, Vuelidate
 
 ### Install
