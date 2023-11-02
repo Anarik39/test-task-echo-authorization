@@ -1,24 +1,25 @@
-# echo-projet
+# Test task Echo company
 
-## Project setup
-```
+## SPA project with authorization/registration
+
+Created an SPA application with authorization/registration
+
+Stack: Vue 2, Vuex (persistedstate), Vue-router Vuetify, Vuelidate
+
+### Install
+
+```sh
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+### Compile and Hot-Reload for Development
+
+```sh
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
+### Type-Check, Compile and Minify for Production
+
+```sh
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
