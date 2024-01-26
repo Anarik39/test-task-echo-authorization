@@ -1,6 +1,6 @@
 # Test task Echo company
 
-## SPA project with authorization/registration
+## SPA project with authentication/registration
 
 Stack: Vue 2, Vuex (persistedstate), Vue-router Vuetify, Vuelidate
 
